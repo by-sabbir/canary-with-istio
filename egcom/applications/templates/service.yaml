@@ -1,0 +1,19 @@
+---
+{{- range $module, $attr := .Values.modules }}
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: {{ $module }}
+    version: {{ $attr.version }}
+  name: {{ $module }}
+spec:
+  ports:
+  - name: tcp
+    port: {{ $attr.servicePort }}
+    protocol: TCP
+    targetPort: {{ $attr.containerPort }}
+  selector:
+    app: {{ $module }}
+---
+{{- end }}

@@ -1,0 +1,33 @@
+{{- range $module, $attr := .Values.modules }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: {{ $module }}
+    version: {{ $attr.version }}
+  name: {{ $module }}
+spec:
+  replicas: {{ $.Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ $module }}
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: {{ $module }}
+        version: {{ $attr.version }}
+    spec:
+      containers:
+      - image: {{ $attr.image }}
+        name: {{ $module }}
+        imagePullPolicy: Always
+        volumeMounts:
+        - name: egconfig
+          mountPath: /var
+      volumes:
+      - name: egconfig
+        configMap:
+          name: egcom
+{{- end }}

@@ -1,0 +1,53 @@
+replicaCount: 2
+version: v1
+
+
+modules:
+  product-v1:
+      backend: product
+      image: bysabbir/egcom-product:v1
+      version: v1
+      containerPort: 5050
+      servicePort: 8080
+  inventory-v1:
+      backend: inventory
+      image: bysabbir/egcom-inventory:v1
+      version: v1
+      containerPort: 5050
+      servicePort: 8080
+  review-v1:
+      backend: review
+      image: bysabbir/egcom-review:v1
+      version: v1
+      containerPort: 5050
+      servicePort: 8080
+  apigw-v1:
+      backend: apigw
+      image: bysabbir/egcom-apigw:v1
+      version: v1
+      containerPort: 8080
+      servicePort: 8080
+  product-v2:
+      backend: product
+      image: bysabbir/egcom-product:v2
+      version: v2
+      containerPort: 5050
+      servicePort: 8080
+  inventory-v2:
+      backend: inventory
+      image: bysabbir/egcom-inventory:v2
+      version: v2
+      containerPort: 5050
+      servicePort: 8080
+  review-v2:
+      backend: review
+      image: bysabbir/egcom-review:v2
+      version: v2
+      containerPort: 5050
+      servicePort: 8080
+  apigw-v2:
+      backend: apigw
+      image: bysabbir/egcom-apigw:v2
+      version: v2
+      containerPort: 8080
+      servicePort: 8080

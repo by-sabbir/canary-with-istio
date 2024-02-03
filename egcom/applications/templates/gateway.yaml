@@ -1,0 +1,39 @@
+---
+{{- range $module, $attr := .Values.modules }}
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: {{ $attr.backend }}-gateway
+spec:
+  gatewayClassName: istio
+  listeners:
+  - name: http
+    port: 80
+    protocol: HTTP
+    allowedRoutes:
+      namespaces:
+        from: Same
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: {{ $attr.backend }}
+spec:
+  parentRefs:
+  - name: {{ $attr.backend }}-gateway
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /api/v1/
+    backendRefs:
+    - name: {{ $attr.backend }}-v1
+      kind: Service
+      port: {{ $attr.servicePort }}
+      weight: 1
+    - name: {{ $attr.backend }}-v2
+      kind: Service
+      port: {{ $attr.servicePort }}
+      weight: 0
+---
+{{- end }}
