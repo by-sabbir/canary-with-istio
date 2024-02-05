@@ -1,5 +1,28 @@
 # Canary Deployment with Istio
 
+## System Architecture
+The purpose of this demo is to simulate a simple e-commerce event-driven microsercie architecture.
+
+```mermaid
+flowchart LR
+
+    APIGW --> Product --> RabbitMQ
+    APIGW --> Inventory
+    APIGW --> Review
+    RabbitMQ --> Inventory
+
+    subgraph Services
+            MongoDB[(Database)] <--> Product
+            MongoDB <--> Inventory
+            MongoDB <--> Review
+        end
+
+    subgraph EventBus
+        Product --> RabbitMQ
+        RabbitMQ --> Inventory
+    end
+
+```
 ## Kind cluster initiation
 If you don't already have kind installed, follow the [link](https://kind.sigs.k8s.io/docs/user/quick-start/)
 
